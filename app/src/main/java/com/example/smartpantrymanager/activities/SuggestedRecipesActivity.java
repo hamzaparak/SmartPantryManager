@@ -125,6 +125,7 @@ public class SuggestedRecipesActivity
 
         RecipeAdapter adapter =
                 new RecipeAdapter(
+                        this,
                         suggestedRecipes
                 );
 
