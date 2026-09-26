@@ -23,16 +23,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/suggestedRecipesButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#FFD8C7"
+        android:text="Suggested Recipes"
+        android:textColor="#4A342E"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pantryRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
         android:clipToPadding="false"
+        android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@id/addIngredientButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleText" />
+        app:layout_constraintTop_toBottomOf="@id/suggestedRecipesButton" />
 
     <TextView
         android:id="@+id/emptyTitle"
@@ -45,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@id/emptyMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintTop_toBottomOf="@id/suggestedRecipesButton"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView

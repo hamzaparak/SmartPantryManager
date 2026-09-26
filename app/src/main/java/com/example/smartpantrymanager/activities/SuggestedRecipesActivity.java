@@ -1,6 +1,5 @@
 package com.example.smartpantrymanager.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,17 +13,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpantrymanager.R;
-import com.example.smartpantrymanager.adapters.PantryAdapter;
+import com.example.smartpantrymanager.adapters.RecipeAdapter;
 import com.example.smartpantrymanager.database.DatabaseHelper;
 import com.example.smartpantrymanager.models.PantryItem;
+import com.example.smartpantrymanager.models.Recipe;
+import com.example.smartpantrymanager.utils.RecipeMatcher;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class SuggestedRecipesActivity
+        extends AppCompatActivity {
 
-    private RecyclerView pantryRecyclerView;
-    private TextView emptyTitle;
-    private TextView emptyMessage;
+    private RecyclerView recipeRecyclerView;
+
+    private TextView noRecipesTitle;
+    private TextView noRecipesMessage;
 
     private DatabaseHelper databaseHelper;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(
-                R.layout.activity_main
+                R.layout.activity_suggested_recipes
         );
 
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -60,109 +63,100 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        pantryRecyclerView =
+        recipeRecyclerView =
                 findViewById(
-                        R.id.pantryRecyclerView
+                        R.id.recipeRecyclerView
                 );
 
-        emptyTitle =
+        noRecipesTitle =
                 findViewById(
-                        R.id.emptyTitle
+                        R.id.noRecipesTitle
                 );
 
-        emptyMessage =
+        noRecipesMessage =
                 findViewById(
-                        R.id.emptyMessage
+                        R.id.noRecipesMessage
                 );
 
-        Button addIngredientButton =
+        Button backButton =
                 findViewById(
-                        R.id.addIngredientButton
-                );
-
-        Button suggestedRecipesButton =
-                findViewById(
-                        R.id.suggestedRecipesButton
+                        R.id.backButton
                 );
 
         databaseHelper =
                 new DatabaseHelper(this);
 
-        pantryRecyclerView.setLayoutManager(
+        recipeRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        addIngredientButton.setOnClickListener(v -> {
-
-            Intent intent =
-                    new Intent(
-                            MainActivity.this,
-                            AddEditIngredientActivity.class
-                    );
-
-            startActivity(intent);
-        });
-
-        suggestedRecipesButton.setOnClickListener(v -> {
-
-            Intent intent =
-                    new Intent(
-                            MainActivity.this,
-                            SuggestedRecipesActivity.class
-                    );
-
-            startActivity(intent);
-        });
+        backButton.setOnClickListener(v ->
+                finish()
+        );
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        loadPantryItems();
+        loadSuggestedRecipes();
     }
 
-    private void loadPantryItems() {
+    private void loadSuggestedRecipes() {
 
         List<PantryItem> pantryItems =
                 databaseHelper
                         .getAllPantryItems();
 
-        PantryAdapter adapter =
-                new PantryAdapter(
-                        this,
-                        pantryItems
+        List<Recipe> allRecipes =
+                databaseHelper
+                        .getAllRecipes();
+
+        List<Recipe> suggestedRecipes =
+                RecipeMatcher.getSuggestedRecipes(
+                        pantryItems,
+                        allRecipes,
+                        recipeId ->
+                                databaseHelper
+                                        .getRecipeIngredients(
+                                                recipeId
+                                        )
                 );
 
-        pantryRecyclerView.setAdapter(
+        RecipeAdapter adapter =
+                new RecipeAdapter(
+                        suggestedRecipes
+                );
+
+        recipeRecyclerView.setAdapter(
                 adapter
         );
 
-        if (pantryItems.isEmpty()) {
+        if (suggestedRecipes.isEmpty()) {
 
-            pantryRecyclerView.setVisibility(
+            recipeRecyclerView.setVisibility(
                     View.GONE
             );
 
-            emptyTitle.setVisibility(
+            noRecipesTitle.setVisibility(
                     View.VISIBLE
             );
 
-            emptyMessage.setVisibility(
+            noRecipesMessage.setVisibility(
                     View.VISIBLE
             );
 
         } else {
 
-            pantryRecyclerView.setVisibility(
+            recipeRecyclerView.setVisibility(
                     View.VISIBLE
             );
 
-            emptyTitle.setVisibility(
+            noRecipesTitle.setVisibility(
                     View.GONE
             );
 
-            emptyMessage.setVisibility(
+            noRecipesMessage.setVisibility(
                     View.GONE
             );
         }
