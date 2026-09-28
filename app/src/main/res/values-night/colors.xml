@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="app_background">#1E1A19</color>
+
+    <color name="top_bar">#3A2C28</color>
+
+    <color name="card_background">#2B2422</color>
+
+    <color name="button_background">#6E4C42</color>
+
+    <color name="main_text">#FFF4EF</color>
+
+    <color name="secondary_text">#D5C1BA</color>
+
+    <color name="light_secondary_text">#BBA8A1</color>
+
+</resources>
