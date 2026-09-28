@@ -4,8 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F6"
-    android:fillViewport="true">
+    android:background="@color/app_background"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="#FFD8C7"
+            android:background="@color/top_bar"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="12dp"
@@ -23,10 +24,16 @@
 
             <Button
                 android:id="@+id/backButton"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@android:color/transparent"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="0dp"
+                android:stateListAnimator="@null"
                 android:text="←"
-                android:textSize="18sp" />
+                android:textColor="@color/main_text"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/recipeTitle"
@@ -35,7 +42,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:text="Recipe"
-                android:textColor="#4A342E"
+                android:textColor="@color/main_text"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -51,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ingredients"
-                android:textColor="#4A342E"
+                android:textColor="@color/main_text"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -60,17 +67,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:lineSpacingExtra="4dp"
                 android:text="Ingredients"
-                android:textColor="#78645D"
-                android:textSize="16sp"
-                android:lineSpacingExtra="4dp" />
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Method"
-                android:textColor="#4A342E"
+                android:textColor="@color/main_text"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -79,10 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:lineSpacingExtra="5dp"
                 android:text="Method"
-                android:textColor="#78645D"
-                android:textSize="16sp"
-                android:lineSpacingExtra="5dp" />
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

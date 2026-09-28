@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    android:background="#FFF1EB"
+    android:background="@color/card_background"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recipe Name"
-        android:textColor="#4A342E"
+        android:textColor="@color/main_text"
         android:textSize="18sp"
         android:textStyle="bold" />
 

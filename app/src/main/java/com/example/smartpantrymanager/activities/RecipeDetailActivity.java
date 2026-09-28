@@ -107,8 +107,10 @@ public class RecipeDetailActivity
 
             ingredientList
                     .append(
-                            ingredient
-                                    .getRequiredQuantity()
+                            formatQuantity(
+                                    ingredient
+                                            .getRequiredQuantity()
+                            )
                     )
                     .append(" ")
                     .append(
@@ -129,6 +131,22 @@ public class RecipeDetailActivity
 
         methodText.setText(
                 recipe.getMethod()
+        );
+    }
+
+    private String formatQuantity(
+            double quantity) {
+
+        if (quantity ==
+                (long) quantity) {
+
+            return String.valueOf(
+                    (long) quantity
+            );
+        }
+
+        return String.valueOf(
+                quantity
         );
     }
 }

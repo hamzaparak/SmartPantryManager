@@ -6,13 +6,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F6">
+    android:background="@color/app_background"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:background="#FFD8C7"
+        android:background="@color/top_bar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="12dp"
@@ -23,17 +24,23 @@
 
         <Button
             android:id="@+id/backButton"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:stateListAnimator="@null"
             android:text="←"
-            android:textSize="18sp" />
+            android:textColor="@color/main_text"
+            android:textSize="22sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Suggested Recipes"
-            android:textColor="#4A342E"
+            android:textColor="@color/main_text"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -55,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No recipes available"
-        android:textColor="#4A342E"
+        android:textColor="@color/main_text"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/noRecipesMessage"
@@ -71,7 +78,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Add all the ingredients needed for a recipe to see suggestions."
-        android:textColor="#78645D"
+        android:textColor="@color/secondary_text"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

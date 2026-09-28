@@ -61,7 +61,9 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         );
 
         holder.quantityText.setText(
-                item.getQuantity() +
+                formatQuantity(
+                        item.getQuantity()
+                ) +
                         " " +
                         item.getUnit()
         );
@@ -86,6 +88,22 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
 
             context.startActivity(intent);
         });
+    }
+
+    private String formatQuantity(
+            double quantity) {
+
+        if (quantity ==
+                (long) quantity) {
+
+            return String.valueOf(
+                    (long) quantity
+            );
+        }
+
+        return String.valueOf(
+                quantity
+        );
     }
 
     private void updateExpiryStatus(
