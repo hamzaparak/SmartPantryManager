@@ -8,13 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpantrymanager.R;
 import com.example.smartpantrymanager.activities.AddEditIngredientActivity;
 import com.example.smartpantrymanager.models.PantryItem;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
@@ -33,7 +39,11 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
             int viewType) {
 
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.item_pantry, parent, false);
+                .inflate(
+                        R.layout.item_pantry,
+                        parent,
+                        false
+                );
 
         return new PantryViewHolder(view);
     }
@@ -43,32 +53,31 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
             @NonNull PantryViewHolder holder,
             int position) {
 
-        PantryItem item = pantryItems.get(position);
+        PantryItem item =
+                pantryItems.get(position);
 
-        holder.nameText.setText(item.getName());
-
-        holder.quantityText.setText(
-                item.getQuantity() + " " + item.getUnit()
+        holder.nameText.setText(
+                item.getName()
         );
 
-        if (item.getExpiryDate() == null ||
-                item.getExpiryDate().trim().isEmpty()) {
+        holder.quantityText.setText(
+                item.getQuantity() +
+                        " " +
+                        item.getUnit()
+        );
 
-            holder.expiryText.setText("Expiry:not set");
-
-        } else {
-
-            holder.expiryText.setText(
-                    "Expry: " + item.getExpiryDate()
-            );
-        }
+        updateExpiryStatus(
+                holder.expiryText,
+                item.getExpiryDate()
+        );
 
         holder.itemView.setOnClickListener(v -> {
 
-            Intent intent = new Intent(
-                    context,
-                    AddEditIngredientActivity.class
-            );
+            Intent intent =
+                    new Intent(
+                            context,
+                            AddEditIngredientActivity.class
+                    );
 
             intent.putExtra(
                     "ITEM_ID",
@@ -77,6 +86,118 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
 
             context.startActivity(intent);
         });
+    }
+
+    private void updateExpiryStatus(
+            TextView expiryText,
+            String expiryDate) {
+
+        if (expiryDate == null ||
+                expiryDate.trim().isEmpty()) {
+
+            expiryText.setText(
+                    "Expiry: Not set"
+            );
+
+            expiryText.setTextColor(
+                    ContextCompat.getColor(
+                            context,
+                            R.color.light_secondary_text
+                    )
+            );
+
+            return;
+        }
+
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(
+                        "dd/MM/yyyy",
+                        Locale.getDefault()
+                );
+
+        dateFormat.setLenient(false);
+
+        try {
+
+            Date expiry =
+                    dateFormat.parse(
+                            expiryDate
+                    );
+
+            Date today =
+                    new Date();
+
+            if (expiry == null) {
+                return;
+            }
+
+            long difference =
+                    expiry.getTime() -
+                            today.getTime();
+
+            long daysRemaining =
+                    TimeUnit.MILLISECONDS
+                            .toDays(
+                                    difference
+                            );
+
+            if (daysRemaining < 0) {
+
+                expiryText.setText(
+                        "Expired: " +
+                                expiryDate
+                );
+
+                expiryText.setTextColor(
+                        ContextCompat.getColor(
+                                context,
+                                R.color.expired_text
+                        )
+                );
+
+            } else if (daysRemaining <= 7) {
+
+                expiryText.setText(
+                        "Expires soon: " +
+                                expiryDate
+                );
+
+                expiryText.setTextColor(
+                        ContextCompat.getColor(
+                                context,
+                                R.color.expiry_warning
+                        )
+                );
+
+            } else {
+
+                expiryText.setText(
+                        "Expiry: " +
+                                expiryDate
+                );
+
+                expiryText.setTextColor(
+                        ContextCompat.getColor(
+                                context,
+                                R.color.light_secondary_text
+                        )
+                );
+            }
+
+        } catch (ParseException e) {
+
+            expiryText.setText(
+                    "Expiry: " +
+                            expiryDate
+            );
+
+            expiryText.setTextColor(
+                    ContextCompat.getColor(
+                            context,
+                            R.color.light_secondary_text
+                    )
+            );
+        }
     }
 
     @Override
@@ -91,12 +212,25 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         TextView quantityText;
         TextView expiryText;
 
-        public PantryViewHolder(@NonNull View itemView) {
+        public PantryViewHolder(
+                @NonNull View itemView) {
+
             super(itemView);
 
-            nameText = itemView.findViewById(R.id.itemName);
-            quantityText = itemView.findViewById(R.id.itemQuantity);
-            expiryText = itemView.findViewById(R.id.itemExpiry);
+            nameText =
+                    itemView.findViewById(
+                            R.id.itemName
+                    );
+
+            quantityText =
+                    itemView.findViewById(
+                            R.id.itemQuantity
+                    );
+
+            expiryText =
+                    itemView.findViewById(
+                            R.id.itemExpiry
+                    );
         }
     }
 }

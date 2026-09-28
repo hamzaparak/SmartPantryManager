@@ -16,4 +16,8 @@
 
     <color name="light_secondary_text">#BBA8A1</color>
 
+    <color name="expiry_warning">#FFB95C</color>
+
+    <color name="expired_text">#FF8A80</color>
+
 </resources>
