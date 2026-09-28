@@ -4,7 +4,11 @@ import com.example.smartpantrymanager.models.PantryItem;
 import com.example.smartpantrymanager.models.Recipe;
 import com.example.smartpantrymanager.models.RecipeIngredient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,6 +29,7 @@ public class RecipeMatcher {
         List<Recipe> suggestedRecipes =
                 new ArrayList<>();
 
+        //checks every recipe against the pantry
         for (Recipe recipe : recipes) {
 
             List<RecipeIngredient> requiredIngredients =
@@ -47,6 +52,7 @@ public class RecipeMatcher {
             List<PantryItem> pantryItems,
             List<RecipeIngredient> requiredIngredients) {
 
+        //here every required ingredient must be available
         for (RecipeIngredient required :
                 requiredIngredients) {
 
@@ -91,6 +97,13 @@ public class RecipeMatcher {
                 continue;
             }
 
+            //expired items should not create recipes
+            if (isExpired(
+                    pantryItem.getExpiryDate())) {
+
+                continue;
+            }
+
             double convertedQuantity =
                     convertQuantity(
                             pantryItem.getQuantity(),
@@ -108,6 +121,95 @@ public class RecipeMatcher {
         return totalQuantity;
     }
 
+    private static boolean isExpired(
+            String expiryDate) {
+
+        //no epiry date means the item can still be used
+        if (expiryDate == null ||
+                expiryDate.trim().isEmpty()) {
+
+            return false;
+        }
+
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(
+                        "dd/MM/yyyy",
+                        Locale.getDefault()
+                );
+
+        dateFormat.setLenient(false);
+
+        try {
+
+            Date expiry =
+                    dateFormat.parse(
+                            expiryDate
+                    );
+
+            if (expiry == null) {
+                return false;
+            }
+
+            Calendar today =
+                    Calendar.getInstance();
+
+            today.set(
+                    Calendar.HOUR_OF_DAY,
+                    0
+            );
+
+            today.set(
+                    Calendar.MINUTE,
+                    0
+            );
+
+            today.set(
+                    Calendar.SECOND,
+                    0
+            );
+
+            today.set(
+                    Calendar.MILLISECOND,
+                    0
+            );
+
+            Calendar expiryDay =
+                    Calendar.getInstance();
+
+            expiryDay.setTime(
+                    expiry
+            );
+
+            expiryDay.set(
+                    Calendar.HOUR_OF_DAY,
+                    0
+            );
+
+            expiryDay.set(
+                    Calendar.MINUTE,
+                    0
+            );
+
+            expiryDay.set(
+                    Calendar.SECOND,
+                    0
+            );
+
+            expiryDay.set(
+                    Calendar.MILLISECOND,
+                    0
+            );
+
+            return expiryDay.before(
+                    today
+            );
+
+        } catch (ParseException e) {
+
+            return false;
+        }
+    }
+
     private static String normaliseName(
             String name) {
 
@@ -115,6 +217,7 @@ public class RecipeMatcher {
             return "";
         }
 
+        //normalises names so singular and plural forms can match
         String normalName =
                 name.trim()
                         .toLowerCase(
@@ -151,6 +254,7 @@ public class RecipeMatcher {
             String fromUnit,
             String toUnit) {
 
+        //allows units to be compared
         if (fromUnit == null ||
                 toUnit == null) {
 
